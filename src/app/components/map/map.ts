@@ -61,6 +61,8 @@ export class Map implements AfterViewInit, OnDestroy {
     this.selectedLayer = layer;
 
     const countryName = feature.properties?.['name'] ?? 'Unknown';
+    const isoCode = feature.properties?.['ISO3166-1-Alpha-2'] ?? null;
     this.countryService.selectedCountry.set(countryName);
+    this.countryService.selectedCountryCode.set(isoCode);
   }
 }

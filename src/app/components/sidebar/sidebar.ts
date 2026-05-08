@@ -15,15 +15,17 @@ export class Sidebar {
   private lastfmService = inject(LastfmService);
 
   selectedCountry = this.countryService.selectedCountry;
+  selectedCountryCode = this.countryService.selectedCountryCode;
+
   tracks: Track[] = [];
   loading = false;
   error: string | null = null;
 
   constructor() {
     effect(() => {
-      const country = this.selectedCountry();
-      if (country) {
-        this.fetchTracks(country);
+      const code = this.selectedCountryCode();
+      if (code) {
+        this.fetchTracks(code);
       }
     });
   }
