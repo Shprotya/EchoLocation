@@ -12,8 +12,8 @@ export class LastfmService {
 
   getTopTracks(country: string): Observable<Track[]> {
     const url = `${this.baseUrl}?method=geo.gettoptracks&country=${country}&api_key=${this.apiKey}&format=json&limit=10`;
-    return this.http.get<{ tracks: { track: Track[] } }>(url).pipe(
-      map(res => res.tracks.track)
+    return this.http.get<any>(url).pipe(
+      map(res => res.tracks.track as Track[])
     );
   }
 }
