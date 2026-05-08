@@ -1,5 +1,6 @@
-import { Component, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, inject } from '@angular/core';
 import * as L from 'leaflet';
+import { Countryservice } from '../../services/countryservice';
 
 @Component({
   selector: 'app-map',
@@ -11,6 +12,7 @@ export class Map implements AfterViewInit, OnDestroy {
   private map!: L.Map;
   private geojsonLayer!: L.GeoJSON;
   private selectedLayer: L.Layer | null = null;
+  private countryService = inject(Countryservice);
 
   ngAfterViewInit(): void {
     this.initMap();
@@ -23,16 +25,9 @@ export class Map implements AfterViewInit, OnDestroy {
 
   private initMap(): void {
     this.map = L.map('map').setView([20, 0], 2);
-
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors'
     }).addTo(this.map);
-
-    this.map.on('click', (e: L.LeafletMouseEvent) => {
-      const lat = e.latlng.lat;
-      const lng = e.latlng.lng;
-      console.log(`Clicked: lat=${lat}, lng=${lng}`);
-    });
   }
 
   private loadGeoJson(): void {
@@ -53,7 +48,6 @@ export class Map implements AfterViewInit, OnDestroy {
   }
 
   private onCountryClick(feature: GeoJSON.Feature, layer: L.Layer): void {
-    // Reset previously selected country
     if (this.selectedLayer) {
       this.geojsonLayer.resetStyle(this.selectedLayer);
     }
@@ -67,6 +61,6 @@ export class Map implements AfterViewInit, OnDestroy {
     this.selectedLayer = layer;
 
     const countryName = feature.properties?.['name'] ?? 'Unknown';
-    console.log('Selected country:', countryName);
+    this.countryService.selectedCountry.set(countryName);
   }
 }
