@@ -1,15 +1,15 @@
-import { Component } from '@angular/core';
-import { TrackItem } from '../track-item/track-item';
-import { input } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 import { Track } from '../../models/track.model';
+import { TrackItem } from '../track-item/track-item';
 
 @Component({
   selector: 'app-track-list',
   imports: [TrackItem],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ol class="space-y-2">
-      @for (track of tracks(); track track.name) {
-        <app-track-item [track]="track" />
+    <ol>
+      @for (track of tracks(); track track.name; let i = $index) {
+        <app-track-item [track]="track" [index]="i" />
       }
     </ol>
   `

@@ -44,7 +44,7 @@ export class Map implements AfterViewInit, OnDestroy {
       .then(res => res.json())
       .then(data => {
         this.geojsonLayer = L.geoJSON(data, {
-          style: { color: '#d94a4a', weight: 1, fillOpacity: 0 },
+          style: { color: '#4a90d9', weight: 1, fillOpacity: 0 },
           onEachFeature: (feature, layer) => {
             layer.on('click', () => this.onCountryClick(feature, layer));
           }
@@ -88,7 +88,7 @@ export class Map implements AfterViewInit, OnDestroy {
     if (this.selectedLayer) {
       this.geojsonLayer.resetStyle(this.selectedLayer);
     }
-    (layer as L.Path).setStyle({ fillOpacity: 0.4, fillColor: '#d94a4a' });
+    (layer as L.Path).setStyle({ fillOpacity: 0.4, fillColor: '#4a90d9' });
     this.selectedLayer = layer;
   }
 }

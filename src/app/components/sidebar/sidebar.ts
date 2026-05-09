@@ -1,4 +1,4 @@
-import { Component, inject, effect, signal } from '@angular/core';
+import { Component, inject, effect, signal, ChangeDetectionStrategy } from '@angular/core';
 import { Track } from '../../models/track.model';
 import { TrackList } from '../track-list/track-list';
 import { SearchBar } from '../search-bar/search-bar';
@@ -11,7 +11,8 @@ import { HistoryService } from '../../services/historyservice';
   selector: 'app-sidebar',
   imports: [TrackList, SearchBar, Stats],
   templateUrl: './sidebar.html',
-  styleUrl: './sidebar.css'
+  styleUrl: './sidebar.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Sidebar {
   private countryService = inject(Countryservice);
@@ -24,6 +25,7 @@ export class Sidebar {
   loading = signal(false);
   error = signal<string | null>(null);
   activeTab = signal<'tracks' | 'stats'>('tracks');
+  isOpen = signal(true);
 
   constructor() {
     effect(() => {
@@ -31,8 +33,13 @@ export class Sidebar {
       if (code) {
         this.activeTab.set('tracks');
         this.fetchTracks(code);
+        this.isOpen.set(true);
       }
     });
+  }
+
+  toggleSidebar(): void {
+    this.isOpen.update(v => !v);
   }
 
   private fetchTracks(code: string): void {
