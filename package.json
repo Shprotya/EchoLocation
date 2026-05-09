@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "api-server": "cd api-server && node index.mjs",
+    "dev": "concurrently \"ng serve\" \"cd api-server && node index.mjs\""
   },
   "prettier": {
     "printWidth": 100,
