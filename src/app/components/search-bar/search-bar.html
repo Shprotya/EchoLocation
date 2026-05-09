@@ -1,7 +1,7 @@
 <div class="flex gap-2 mb-1">
     <input type="text" [ngModel]="query()" (ngModelChange)="query.set($event); isEmpty.set(false)"
         (keyup.enter)="onSearch()" placeholder="Search a country..."
-        class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-400 text-gray-800" />
+        class="flex-1 border border-gray-400 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-400 text-gray-800 bg-transparent"/>
     <button (click)="onSearch()"
         class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-medium">
         Search

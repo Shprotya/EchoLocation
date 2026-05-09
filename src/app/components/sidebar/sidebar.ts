@@ -25,7 +25,7 @@ export class Sidebar {
   loading = signal(false);
   error = signal<string | null>(null);
   activeTab = signal<'tracks' | 'stats'>('tracks');
-  isOpen = signal(true);
+  isOpen = signal(window.innerWidth > 640);
 
   constructor() {
     effect(() => {

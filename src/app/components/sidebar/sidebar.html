@@ -1,50 +1,51 @@
-<!-- Toggle button -->
-<button (click)="toggleSidebar()"
-    class="absolute top-2 z-[1000] bg-white border border-gray-200 shadow-md rounded-full w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-all duration-300"
-    [style.left]="isOpen() ? '308px' : '8px'" [attr.aria-label]="isOpen() ? 'Close sidebar' : 'Open sidebar'">
-    {{ isOpen() ? '‹' : '›' }}
-</button>
+<!-- Toggle button — always visible, positioned relative to sidebar -->
+<div class="relative h-full flex">
+    <div class="h-full border-r border-gray-300 shrink-0 transition-all duration-300 flex flex-col shadow-md overflow-hidden"
+        [style.width]="isOpen() ? '300px' : '0px'" style="background-color: #d9d9ce;">
+        @if (isOpen()) {
+        <div class="p-4 flex flex-col h-full overflow-y-auto w-[300px]">
+            <app-search-bar />
 
-<!-- Sidebar panel -->
-<div class="h-full bg-white border-r border-gray-200 shrink-0 transition-all duration-300 flex flex-col"
-    [style.width]="isOpen() ? '300px' : '0px'" [style.overflow]="isOpen() ? 'visible' : 'hidden'">
-    @if (isOpen()) {
-    <div class="p-4 flex flex-col h-full overflow-y-auto">
-        <app-search-bar />
+            <div class="flex mb-4 border-b border-gray-400">
+                <button (click)="activeTab.set('tracks')" [class]="activeTab() === 'tracks'
+              ? 'flex-1 py-2 text-sm font-semibold text-blue-700 border-b-2 border-blue-500'
+              : 'flex-1 py-2 text-sm text-gray-600 hover:text-gray-800'">
+                    Top Tracks
+                </button>
+                <button (click)="activeTab.set('stats')" [class]="activeTab() === 'stats'
+              ? 'flex-1 py-2 text-sm font-semibold text-blue-700 border-b-2 border-blue-500'
+              : 'flex-1 py-2 text-sm text-gray-600 hover:text-gray-800'">
+                    History
+                </button>
+            </div>
 
-        <!-- Tabs -->
-        <div class="flex mb-4 border-b border-gray-200">
-            <button (click)="activeTab.set('tracks')" [class]="activeTab() === 'tracks'
-            ? 'flex-1 py-2 text-sm font-semibold text-blue-600 border-b-2 border-blue-500'
-            : 'flex-1 py-2 text-sm text-gray-500 hover:text-gray-700'">
-                Top Tracks
-            </button>
-            <button (click)="activeTab.set('stats')" [class]="activeTab() === 'stats'
-            ? 'flex-1 py-2 text-sm font-semibold text-blue-600 border-b-2 border-blue-500'
-            : 'flex-1 py-2 text-sm text-gray-500 hover:text-gray-700'">
-                History
-            </button>
+            @if (activeTab() === 'tracks') {
+            @if (selectedCountry()) {
+            <p class="text-xs text-gray-500 mb-1">You have chosen:</p>
+            <h2 class="text-lg font-bold text-gray-800 mb-3">{{ selectedCountry() }}</h2>
+            @if (loading()) {
+            <p class="text-gray-500 text-sm">Loading tracks...</p>
+            } @else if (error()) {
+            <p class="text-red-500 text-sm">{{ error() }}</p>
+            } @else {
+            <app-track-list [tracks]="tracks()" />
+            }
+            } @else {
+            <p class="text-gray-500 text-sm mt-8 text-center">Click a country to explore its music</p>
+            }
+            }
+
+            @if (activeTab() === 'stats') {
+            <app-stats />
+            }
         </div>
-
-        @if (activeTab() === 'tracks') {
-        @if (selectedCountry()) {
-        <p class="text-xs text-gray-500 mb-1">You have chosen:</p>
-        <h2 class="text-lg font-bold text-gray-800 mb-3">{{ selectedCountry() }}</h2>
-        @if (loading()) {
-        <p class="text-gray-400 text-sm">Loading tracks...</p>
-        } @else if (error()) {
-        <p class="text-red-500 text-sm">{{ error() }}</p>
-        } @else {
-        <app-track-list [tracks]="tracks()" />
-        }
-        } @else {
-        <p class="text-gray-400 text-sm mt-8 text-center">Click a country to explore its music</p>
-        }
-        }
-
-        @if (activeTab() === 'stats') {
-        <app-stats />
         }
     </div>
-    }
+
+    <!-- Toggle button always rendered, positioned at the edge of sidebar -->
+    <button (click)="toggleSidebar()"
+        class="absolute top-2 z-[2000] bg-white border border-gray-300 shadow-md rounded-full w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-all duration-300"
+        [style.left]="isOpen() ? '292px' : '4px'" [attr.aria-label]="isOpen() ? 'Close sidebar' : 'Open sidebar'">
+        {{ isOpen() ? '‹' : '›' }}
+    </button>
 </div>

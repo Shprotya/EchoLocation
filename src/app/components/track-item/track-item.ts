@@ -7,8 +7,8 @@ import { ChangeDetectionStrategy } from '@angular/core';
   imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <li class="flex items-center gap-3 py-2 border-b border-gray-100 last:border-0">
-      <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-600 text-xs flex items-center justify-center font-medium shrink-0">
+    <li class="flex items-center gap-3 py-2 border-b border-gray-300 last:border-0">
+      <span class="w-6 h-6 rounded-full bg-blue-200 text-blue-700 text-xs flex items-center justify-center font-medium shrink-0">
         {{ index() + 1 }}
       </span>
       <div class="flex-1 min-w-0">

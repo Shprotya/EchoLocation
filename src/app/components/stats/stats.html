@@ -5,13 +5,13 @@
     } @else {
     <ol class="space-y-2">
         @for (record of records(); track record._id) {
-        <li class="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
+        <li class="flex items-center justify-between py-2 border-b border-gray-300 last:border-0">
             <div class="min-w-0 flex-1">
                 <p class="text-sm font-medium text-gray-800">{{ record.country }}</p>
                 <p class="text-xs text-gray-500 truncate">{{ record.trackName }} — {{ record.artist }}</p>
                 <p class="text-xs text-gray-400">{{ record.exploredAt | date:'medium' }}</p>
             </div>
-            <button (click)="delete(record._id!)" class="text-gray-300 hover:text-red-400 text-sm ml-3 shrink-0"
+            <button (click)="delete(record._id!)" class="text-gray-500 hover:text-red-400 text-sm ml-3 shrink-0"
                 aria-label="Delete record">
                 ✕
             </button>

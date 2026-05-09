@@ -34,8 +34,9 @@ export class Map implements AfterViewInit, OnDestroy {
 
   private initMap(): void {
     this.map = L.map('map').setView([20, 0], 2);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors'
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors © CARTO',
+      subdomains: 'abcd'
     }).addTo(this.map);
   }
 
@@ -44,7 +45,7 @@ export class Map implements AfterViewInit, OnDestroy {
       .then(res => res.json())
       .then(data => {
         this.geojsonLayer = L.geoJSON(data, {
-          style: { color: '#4a90d9', weight: 1, fillOpacity: 0 },
+          style: { color: '#89b4d9', weight: 1, fillOpacity: 0, fillColor: 'transparent' },
           onEachFeature: (feature, layer) => {
             layer.on('click', () => this.onCountryClick(feature, layer));
           }
@@ -88,7 +89,7 @@ export class Map implements AfterViewInit, OnDestroy {
     if (this.selectedLayer) {
       this.geojsonLayer.resetStyle(this.selectedLayer);
     }
-    (layer as L.Path).setStyle({ fillOpacity: 0.4, fillColor: '#4a90d9' });
+    (layer as L.Path).setStyle({ fillOpacity: 0.4, fillColor: '#89b4d9' });
     this.selectedLayer = layer;
   }
 }
