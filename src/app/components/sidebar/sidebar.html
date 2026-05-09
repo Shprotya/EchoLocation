@@ -1,10 +1,10 @@
 <!-- Toggle button — always visible, positioned relative to sidebar -->
 <div class="relative h-full flex">
     <div class="h-full border-r border-gray-300 shrink-0 transition-all duration-300 flex flex-col shadow-md overflow-hidden"
-        [style.width]="isOpen() ? '300px' : '0px'" style="background-color: #d9d9ce;">
+        [style.width]="isOpen() ? '300px' : '0px'" style="background-color: #f3f2f8;">
         @if (isOpen()) {
         <div class="p-4 flex flex-col h-full overflow-y-auto w-[300px]">
-            <app-search-bar />
+            <app-search-bar />  
 
             <div class="flex mb-4 border-b border-gray-400">
                 <button (click)="activeTab.set('tracks')" [class]="activeTab() === 'tracks'

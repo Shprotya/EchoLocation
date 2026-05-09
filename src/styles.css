@@ -4,10 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-    --sidebar-bg: #f1f1ef;
-}
-
 @media (max-width: 640px) {
     app-sidebar .sidebar-panel {
         width: 0px !important;
