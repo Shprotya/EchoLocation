@@ -63,17 +63,25 @@ export class Map implements AfterViewInit, OnDestroy {
   private searchCountry(query: string): void {
     if (!this.geojsonLayer) return;
 
+    let found = false;
+
     this.geojsonLayer.eachLayer(layer => {
       const feature = (layer as L.GeoJSON & { feature: GeoJSON.Feature }).feature;
       const name: string = feature.properties?.['name'] ?? '';
       if (name.toLowerCase() === query.toLowerCase()) {
+        found = true;
         this.highlightLayer(layer);
         const isoCode = feature.properties?.['ISO3166-1-Alpha-2'] ?? null;
         this.countryService.selectedCountry.set(name);
         this.countryService.selectedCountryCode.set(isoCode);
+        this.countryService.countryNotFound.set(false);
         this.map.flyTo((layer as L.Polygon).getBounds().getCenter(), 4);
       }
     });
+
+    if (!found) {
+      this.countryService.countryNotFound.set(true);
+    }
   }
 
   private highlightLayer(layer: L.Layer): void {

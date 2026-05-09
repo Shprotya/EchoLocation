@@ -5,4 +5,5 @@ export class Countryservice {
   selectedCountry = signal<string | null>(null);
   selectedCountryCode = signal<string | null>(null);
   searchQuery = signal<string | null>(null);
+  countryNotFound = signal(false);
 }
