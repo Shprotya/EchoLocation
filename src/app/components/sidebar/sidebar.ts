@@ -3,10 +3,11 @@ import { Track } from '../../models/track.model';
 import { TrackList } from '../track-list/track-list';
 import { Countryservice } from '../../services/countryservice';
 import { LastfmService } from '../../services/lastfmservice';
+import {SearchBar} from '../search-bar/search-bar';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [TrackList],
+  imports: [TrackList, SearchBar],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css'
 })

@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnDestroy, inject } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, inject, effect } from '@angular/core';
 import * as L from 'leaflet';
 import { Countryservice } from '../../services/countryservice';
 
@@ -13,6 +13,15 @@ export class Map implements AfterViewInit, OnDestroy {
   private geojsonLayer!: L.GeoJSON;
   private selectedLayer: L.Layer | null = null;
   private countryService = inject(Countryservice);
+
+  constructor() {
+    effect(() => {
+      const query = this.countryService.searchQuery();
+      if (query) {
+        this.searchCountry(query);
+      }
+    });
+  }
 
   ngAfterViewInit(): void {
     this.initMap();
@@ -35,11 +44,7 @@ export class Map implements AfterViewInit, OnDestroy {
       .then(res => res.json())
       .then(data => {
         this.geojsonLayer = L.geoJSON(data, {
-          style: {
-            color: '#d94a4a',
-            weight: 1,
-            fillOpacity: 0,
-          },
+          style: { color: '#d94a4a', weight: 1, fillOpacity: 0 },
           onEachFeature: (feature, layer) => {
             layer.on('click', () => this.onCountryClick(feature, layer));
           }
@@ -48,21 +53,34 @@ export class Map implements AfterViewInit, OnDestroy {
   }
 
   private onCountryClick(feature: GeoJSON.Feature, layer: L.Layer): void {
-    if (this.selectedLayer) {
-      this.geojsonLayer.resetStyle(this.selectedLayer);
-    }
-
-    // Highlight clicked country
-    (layer as L.Path).setStyle({
-      fillOpacity: 0.4,
-      fillColor: '#d94a4a',
-    });
-
-    this.selectedLayer = layer;
-
+    this.highlightLayer(layer);
     const countryName = feature.properties?.['name'] ?? 'Unknown';
     const isoCode = feature.properties?.['ISO3166-1-Alpha-2'] ?? null;
     this.countryService.selectedCountry.set(countryName);
     this.countryService.selectedCountryCode.set(isoCode);
+  }
+
+  private searchCountry(query: string): void {
+    if (!this.geojsonLayer) return;
+
+    this.geojsonLayer.eachLayer(layer => {
+      const feature = (layer as L.GeoJSON & { feature: GeoJSON.Feature }).feature;
+      const name: string = feature.properties?.['name'] ?? '';
+      if (name.toLowerCase() === query.toLowerCase()) {
+        this.highlightLayer(layer);
+        const isoCode = feature.properties?.['ISO3166-1-Alpha-2'] ?? null;
+        this.countryService.selectedCountry.set(name);
+        this.countryService.selectedCountryCode.set(isoCode);
+        this.map.flyTo((layer as L.Polygon).getBounds().getCenter(), 4);
+      }
+    });
+  }
+
+  private highlightLayer(layer: L.Layer): void {
+    if (this.selectedLayer) {
+      this.geojsonLayer.resetStyle(this.selectedLayer);
+    }
+    (layer as L.Path).setStyle({ fillOpacity: 0.4, fillColor: '#d94a4a' });
+    this.selectedLayer = layer;
   }
 }
