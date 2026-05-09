@@ -11,10 +11,15 @@ import { Countryservice } from '../../services/countryservice';
 export class SearchBar {
   private countryService = inject(Countryservice);
   query = signal('');
+  notFound = signal(false);
 
   onSearch(): void {
     const name = this.query().trim();
-    if (!name) return;
+    if (!name) {
+      this.notFound.set(true);
+      return;
+    }
+    this.notFound.set(false);
     this.countryService.searchQuery.set(name);
   }
 }
