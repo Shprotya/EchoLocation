@@ -1,7 +1,15 @@
-import { Injectable, signal } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { Countryservice } from './countryservice';
 
-@Injectable({ providedIn: 'root' })
-export class Countryservice {
-  selectedCountry = signal<string | null>(null);      // display name
-  selectedCountryCode = signal<string | null>(null);  // ISO code for API
-}
+describe('Countryservice', () => {
+  let service: Countryservice;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(Countryservice);
+  });
+
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+});

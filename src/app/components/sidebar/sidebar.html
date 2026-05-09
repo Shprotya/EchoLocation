@@ -1,12 +1,12 @@
 <div class="w-80 h-screen bg-gray-900 text-white p-4 overflow-y-auto">
     @if (selectedCountry()) {
     <h2 class="text-xl font-bold mb-4">{{ selectedCountry() }}</h2>
-    @if (loading) {
+    @if (loading()) {
     <p class="text-gray-400">Loading tracks...</p>
-    } @else if (error) {
-    <p class="text-red-400">{{ error }}</p>
+    } @else if (error()) {
+    <p class="text-red-400">{{ error() }}</p>
     } @else {
-    <app-track-list [tracks]="tracks" />
+    <app-track-list [tracks]="tracks()" />
     }
     } @else {
     <p class="text-gray-400 mt-8 text-center">Click a country to explore its music</p>

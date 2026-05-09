@@ -1,4 +1,4 @@
-import { Component, inject, effect } from '@angular/core';
+import { Component, inject, effect, signal } from '@angular/core';
 import { Track } from '../../models/track.model';
 import { TrackList } from '../track-list/track-list';
 import { Countryservice } from '../../services/countryservice';
@@ -16,10 +16,9 @@ export class Sidebar {
 
   selectedCountry = this.countryService.selectedCountry;
   selectedCountryCode = this.countryService.selectedCountryCode;
-
-  tracks: Track[] = [];
-  loading = false;
-  error: string | null = null;
+  tracks = signal<Track[]>([]);
+  loading = signal(false);
+  error = signal<string | null>(null);
 
   constructor() {
     effect(() => {
@@ -30,17 +29,17 @@ export class Sidebar {
     });
   }
 
-  private fetchTracks(country: string): void {
-    this.loading = true;
-    this.error = null;
-    this.lastfmService.getTopTracks(country).subscribe({
+  private fetchTracks(code: string): void {
+    this.loading.set(true);
+    this.error.set(null);
+    this.lastfmService.getTopTracks(code).subscribe({
       next: tracks => {
-        this.tracks = tracks;
-        this.loading = false;
+        this.tracks.set(tracks);
+        this.loading.set(false);
       },
       error: () => {
-        this.error = 'Could not load tracks for this country.';
-        this.loading = false;
+        this.error.set('Could not load tracks for this country.');
+        this.loading.set(false);
       }
     });
   }
