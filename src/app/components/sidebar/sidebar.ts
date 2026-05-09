@@ -2,13 +2,14 @@ import { Component, inject, effect, signal } from '@angular/core';
 import { Track } from '../../models/track.model';
 import { TrackList } from '../track-list/track-list';
 import { SearchBar } from '../search-bar/search-bar';
+import { Stats } from '../stats/stats';
 import { Countryservice } from '../../services/countryservice';
 import { LastfmService } from '../../services/lastfmservice';
 import { HistoryService } from '../../services/historyservice';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [TrackList, SearchBar],
+  imports: [TrackList, SearchBar, Stats],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css'
 })
@@ -22,11 +23,13 @@ export class Sidebar {
   tracks = signal<Track[]>([]);
   loading = signal(false);
   error = signal<string | null>(null);
+  activeTab = signal<'tracks' | 'stats'>('tracks');
 
   constructor() {
     effect(() => {
       const code = this.selectedCountryCode();
       if (code) {
+        this.activeTab.set('tracks');
         this.fetchTracks(code);
       }
     });
