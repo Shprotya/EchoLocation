@@ -1,59 +1,53 @@
-# EchoLocation
+# Echo-Location
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.0.
+**Echo-Location** is a web application designed to break music "echo chambers" by allowing users to explore trending music across the globe through an interactive map. By clicking on a country or using the search bar, users can instantly discover the top 10 most-listened-to tracks in that region.
 
-## Development server
+## 🚀 Key Features
 
-To start a local development server, run:
+* **Interactive World Map**: Powered by Leaflet.js and GeoJSON, allowing users to click and highlight specific countries to fetch local music data.
+* **Real-time Music Discovery**: Integrates with the Last.fm API to retrieve the top 10 trending tracks for any selected country.
+* **Exploration History**: Automatically saves your musical journey to a MongoDB database, allowing you to revisit previously explored countries and their top tracks.
+* **Country Search**: A dedicated search bar with "flyTo" animations to find and highlight countries by name.
+* **Fully Responsive UI**: Built with Tailwind CSS, featuring a collapsible sidebar for a seamless experience on both desktop and mobile.
 
+## 🏗️ Architecture
+
+The application follows a robust three-tier architecture:
+
+* **Frontend**: Angular application hosted as a static website on **Amazon S3**.
+* **Backend**: Express.js server running on an **Amazon EC2** instance (t3.micro), facilitating communication with the database.
+* **Database**: **MongoDB Atlas** cloud-hosted NoSQL database for persistent storage of exploration history.
+
+## 🛠️ Tech Stack
+
+* **Frontend**: Angular (v17+), TypeScript, Tailwind CSS, Leaflet.js.
+* **Backend**: Node.js, Express.js.
+* **Database**: MongoDB.
+* **APIs**: Last.fm (geo.getTopTracks).
+* **DevOps**: Amazon S3, Amazon EC2, PM2.
+
+## 🔧 Key Technical Decisions
+
+* **Angular Signals**: Used for modern, reactive state management across components like `CountryService`.
+* **GeoJSON Integration**: Replaced traditional reverse geocoding with a GeoJSON world dataset to enable instant country detection and visual highlighting upon clicking the map.
+* **ISO Country Mapping**: Utilized the `i18n-iso-countries` package to ensure country names from the map match the specific format required by the Last.fm API.
+
+## 💻 Getting Started
+
+### Prerequisites
+* Node.js (v20 recommended)
+* MongoDB Atlas account
+* Last.fm API Key
+
+### Installation
+1.  Clone the repository.
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+3.  Configure your environment variables in a `.env` file for the backend and `environment.ts` for the frontend.
+
+### Running the Application
+To start both the Angular development server and the Express backend simultaneously, use the following command:
 ```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+npm run dev
